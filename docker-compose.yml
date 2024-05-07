@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  next:
+    build:
+      context: ./
+      dockerfile: ./env/docker/Dockerfile
+      args:
+        BUILD_ENV: ${APP_ENV}
+    container_name: next-container
+    volumes:
+      - .:/next
+    ports:
+      - 3000:3000
+    tty: true
