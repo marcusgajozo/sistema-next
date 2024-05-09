@@ -22,6 +22,13 @@ const AuthProvider = ({
   children: React.ReactNode;
 }>) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (checkUserAuthenticated()) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const login = ({ email, password }: loginCredentials) => {
     apiConfig()
       .post("/login", { email, password })
@@ -33,6 +40,7 @@ const AuthProvider = ({
       })
       .catch((e) => console.log(e?.message));
   };
+
   const logout = () => {
     setIsAuthenticated(false);
   };
