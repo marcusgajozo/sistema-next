@@ -27,7 +27,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      redirect("/produto");
+      window.location.href = "/produto";
     } else {
       setEspera(true);
     }
