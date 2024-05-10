@@ -49,7 +49,7 @@ export default function Venda() {
 
   const registersale = (data: DataProps) => {
     const { items } = data;
-    const lisItems: string[] = items.split(" " && ",");
+    const lisItems: string[] = items.split(/\s|,/);
     console.log(lisItems);
     apiConfig
       .post("/sale", { ...data, items: lisItems })

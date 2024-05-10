@@ -39,7 +39,6 @@ const fieldNameProductConfigurable: any = {
   name: "Nome",
   description: "Descrição",
   saleValue: "Preço",
-  linkDownload: "Link de Download",
   sizes: "Tamanhos",
 };
 
@@ -47,7 +46,6 @@ const fieldNameProductGrouped: any = {
   name: "Nome",
   description: "Descrição",
   saleValue: "Preço",
-  linkDownload: "Link de Download",
   productsAssociates: "Produtos associados",
 };
 
@@ -77,6 +75,7 @@ export default function Produto() {
       .get("/product")
       .then((res) => {
         if (res?.status === 200) {
+          console.log(res?.data);
           setProducts(res?.data);
         }
       })
@@ -89,9 +88,65 @@ export default function Produto() {
   };
 
   const registerProductSimple = (data: any) => {
+    console.log("entrei simples");
     const { saleValue } = data;
     apiConfig
       .post("/product/simple", { ...data, saleValue: Number(saleValue) })
+      .then((res) => {
+        if (res?.status === 201) {
+          handleForm();
+        }
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const registerProductDigital = (data: any) => {
+    console.log("entrei digital");
+    const { saleValue } = data;
+    apiConfig
+      .post("/product/digital", { ...data, saleValue: Number(saleValue) })
+      .then((res) => {
+        if (res?.status === 201) {
+          handleForm();
+        }
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const registerProductConfigurable = (data: any) => {
+    console.log("entrei config");
+    const { sizes, saleValue } = data;
+    const lisSizes: string[] = sizes
+      ? sizes.split(/\s|,/).filter((size: any) => size.trim() !== "")
+      : [];
+    apiConfig
+      .post("/product/configurable", {
+        ...data,
+        saleValue: Number(saleValue),
+        sizes: lisSizes,
+      })
+      .then((res) => {
+        if (res?.status === 201) {
+          handleForm();
+        }
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const registerProductGrouped = (data: any) => {
+    console.log("entrei grouped");
+    const { productsAssociates, saleValue } = data;
+    const lisProductsAssociates: string[] = productsAssociates
+      ? productsAssociates
+          .split(/\s|,/)
+          .filter((productsAssociates: any) => productsAssociates.trim() !== "")
+      : [];
+    apiConfig
+      .post("/product/grouped", {
+        ...data,
+        saleValue: Number(saleValue),
+        productsAssociates: lisProductsAssociates,
+      })
       .then((res) => {
         if (res?.status === 201) {
           handleForm();
@@ -111,9 +166,16 @@ export default function Produto() {
   };
 
   const saveEditProduct = (data: any) => {
-    const { saleValue } = data;
+    const { saleValue, sizes } = data;
+    const lisSizes: string[] = sizes
+      ? sizes.split(/\s|,/).filter((size: any) => size.trim() !== "")
+      : [];
     apiConfig
-      .put(`/product/${data?.id}`, { ...data, saleValue: Number(saleValue) })
+      .put(`/product/${data?.id}`, {
+        ...data,
+        saleValue: Number(saleValue),
+        sizes: lisSizes,
+      })
       .then((res) => {
         if (res?.status === 200) {
           setEditProductForm(false);
@@ -137,40 +199,51 @@ export default function Produto() {
       .catch((e) => console.log(e?.message));
   };
 
+  const selectRegisterProduct: any = {
+    productSimple: registerProductSimple,
+    productDigital: registerProductDigital,
+    productConfigurable: registerProductConfigurable,
+    productGrouped: registerProductGrouped,
+  };
+
   return (
     <>
       {openForm && (
         <>
           <FormCustom
             componentCustom={
-              <>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Tipo de produto
-                  </InputLabel>
-                  <Select
-                    value={select}
-                    label="Tipo de produto"
-                    onChange={(e: SelectChangeEvent) =>
-                      setSelect(e.target.value)
-                    }
-                  >
-                    <MenuItem value={"productSimple"}>Simples</MenuItem>
-                    <MenuItem value={"productDigital"}>Digital</MenuItem>
-                    <MenuItem value={"productConfigurable"}>
-                      Configurável
-                    </MenuItem>
-                    <MenuItem value={"productGrouped"}>Agrupado</MenuItem>
-                  </Select>
-                </FormControl>
-              </>
+              !editProductForm && (
+                <>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Tipo de produto
+                    </InputLabel>
+                    <Select
+                      value={select}
+                      label="Tipo de produto"
+                      onChange={(e: SelectChangeEvent) =>
+                        setSelect(e.target.value)
+                      }
+                    >
+                      <MenuItem value={"productSimple"}>Simples</MenuItem>
+                      <MenuItem value={"productDigital"}>Digital</MenuItem>
+                      <MenuItem value={"productConfigurable"}>
+                        Configurável
+                      </MenuItem>
+                      <MenuItem value={"productGrouped"}>Agrupado</MenuItem>
+                    </Select>
+                  </FormControl>
+                </>
+              )
             }
             title="Produto"
-            fieldName={selectProduct[select]}
+            fieldName={
+              editProductForm ? headerTableName : selectProduct[select]
+            }
             viewForm={handleForm}
             editItemForm={editProductForm}
             saveEditItem={saveEditProduct}
-            registerItem={registerProductSimple}
+            registerItem={selectRegisterProduct[select]}
             itemId={dataProductId}
           />
         </>
