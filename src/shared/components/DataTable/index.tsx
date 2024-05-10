@@ -17,6 +17,7 @@ type DataTableProps = {
   openForm: () => void;
   removeItem: (id: string) => void;
   editItem: (id: string) => void;
+  disableEditing?: boolean;
 };
 
 export default function DataTable({
@@ -26,6 +27,7 @@ export default function DataTable({
   openForm,
   removeItem,
   editItem,
+  disableEditing,
 }: DataTableProps) {
   const keys = Object.keys(nameTitleRows);
   return (
@@ -56,11 +58,13 @@ export default function DataTable({
               })}
               <TableCell>
                 <Box sx={{ gap: 1, display: "flex" }}>
-                  <Tooltip title="Editar" arrow>
-                    <IconButton onClick={() => editItem(row.id)}>
-                      <ModeEditIcon sx={{ color: "#283044" }} />
-                    </IconButton>
-                  </Tooltip>
+                  {!disableEditing && (
+                    <Tooltip title="Editar" arrow>
+                      <IconButton onClick={() => editItem(row.id)}>
+                        <ModeEditIcon sx={{ color: "#283044" }} />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                   <Tooltip title="Deletar" arrow>
                     <IconButton onClick={() => removeItem(row.id)}>
                       <DeleteIcon
