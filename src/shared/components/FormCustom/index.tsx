@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import ButtonCustom from "../ButtonCustom";
 
 type FormCustomProps = {
+  componentCustom?: React.ReactNode;
   title: string;
   fieldName: any;
   viewForm: () => void;
@@ -15,6 +16,7 @@ type FormCustomProps = {
 };
 
 const FormCustom = ({
+  componentCustom,
   title,
   fieldName,
   viewForm,
@@ -48,6 +50,7 @@ const FormCustom = ({
         {title}
       </Typography>
       <Grid item sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        {componentCustom}
         {key.map((name: any, index) => {
           return (
             <TextField
