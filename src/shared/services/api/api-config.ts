@@ -1,7 +1,7 @@
 import { getStorageItem } from '@/shared/utils/localStorage';
 import axios from 'axios';
 
-export const apiConfig = () => {
+const apiConfig = () => {
   const tokenLocalStorage = getStorageItem('token')
   return axios.create({
     baseURL: 'https://teste.grupoimagetech.com.br/api/v1',
@@ -12,3 +12,5 @@ export const apiConfig = () => {
     },
   });
 };
+
+export default apiConfig();

@@ -1,5 +1,5 @@
 import { checkUserAuthenticated } from "@/shared/functions/check-user-authenticated";
-import { apiConfig } from "@/shared/services/api/api-config";
+import apiConfig from "@/shared/services/api/api-config";
 import { setStorageItem } from "@/shared/utils/localStorage";
 import { createContext, useEffect, useState } from "react";
 
@@ -30,7 +30,7 @@ const AuthProvider = ({
   }, []);
 
   const login = ({ email, password }: loginCredentials) => {
-    apiConfig()
+    apiConfig
       .post("/login", { email, password })
       .then((res) => {
         if (res?.data) {
