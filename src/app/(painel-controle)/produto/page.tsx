@@ -5,6 +5,13 @@ import { useEffect, useState } from "react";
 import DataTable from "@/shared/components/DataTable";
 import FormCustom from "@/shared/components/FormCustom";
 import apiConfig from "@/shared/services/api/api-config";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 
 type Product = {
   name: string;
@@ -15,13 +22,47 @@ type Product = {
   productsAssociates: string[];
 };
 
-const headerTableName: any = {
+const fieldNameProductSimple: any = {
+  name: "Nome",
+  description: "Descrição",
+  saleValue: "Preço",
+};
+
+const fieldNameProductDigital: any = {
+  name: "Nome",
+  description: "Descrição",
+  saleValue: "Preço",
+  linkDownload: "Link de Download",
+};
+
+const fieldNameProductConfigurable: any = {
   name: "Nome",
   description: "Descrição",
   saleValue: "Preço",
   linkDownload: "Link de Download",
   sizes: "Tamanhos",
+};
+
+const fieldNameProductGrouped: any = {
+  name: "Nome",
+  description: "Descrição",
+  saleValue: "Preço",
+  linkDownload: "Link de Download",
   productsAssociates: "Produtos associados",
+};
+
+const headerTableName: any = {
+  ...fieldNameProductSimple,
+  ...fieldNameProductDigital,
+  ...fieldNameProductConfigurable,
+  ...fieldNameProductGrouped,
+};
+
+const selectProduct: any = {
+  productSimple: fieldNameProductSimple,
+  productDigital: fieldNameProductDigital,
+  productConfigurable: fieldNameProductConfigurable,
+  productGrouped: fieldNameProductGrouped,
 };
 
 export default function Produto() {
@@ -29,6 +70,7 @@ export default function Produto() {
   const [openForm, setOpenForm] = useState(false);
   const [editProductForm, setEditProductForm] = useState(false);
   const [dataProductId, setDataProductId] = useState({});
+  const [select, setSelect] = useState("productSimple");
 
   useEffect(() => {
     apiConfig
@@ -46,10 +88,10 @@ export default function Produto() {
     setOpenForm(!openForm);
   };
 
-  const registerProduct = (data: any) => {
+  const registerProductSimple = (data: any) => {
     const { saleValue } = data;
     apiConfig
-      .post("/product", { ...data, saleValue: Number(saleValue) })
+      .post("/product/simple", { ...data, saleValue: Number(saleValue) })
       .then((res) => {
         if (res?.status === 201) {
           handleForm();
@@ -98,15 +140,40 @@ export default function Produto() {
   return (
     <>
       {openForm && (
-        <FormCustom
-          title="Produto"
-          fieldName={headerTableName}
-          viewForm={handleForm}
-          editItemForm={editProductForm}
-          saveEditItem={saveEditProduct}
-          registerItem={registerProduct}
-          itemId={dataProductId}
-        />
+        <>
+          <FormCustom
+            componentCustom={
+              <>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Tipo de produto
+                  </InputLabel>
+                  <Select
+                    value={select}
+                    label="Tipo de produto"
+                    onChange={(e: SelectChangeEvent) =>
+                      setSelect(e.target.value)
+                    }
+                  >
+                    <MenuItem value={"productSimple"}>Simples</MenuItem>
+                    <MenuItem value={"productDigital"}>Digital</MenuItem>
+                    <MenuItem value={"productConfigurable"}>
+                      Configurável
+                    </MenuItem>
+                    <MenuItem value={"productGrouped"}>Agrupado</MenuItem>
+                  </Select>
+                </FormControl>
+              </>
+            }
+            title="Produto"
+            fieldName={selectProduct[select]}
+            viewForm={handleForm}
+            editItemForm={editProductForm}
+            saveEditItem={saveEditProduct}
+            registerItem={registerProductSimple}
+            itemId={dataProductId}
+          />
+        </>
       )}
       {!openForm && (
         <DataTable
