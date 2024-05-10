@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
@@ -21,7 +22,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
-import * as React from "react";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -129,7 +133,7 @@ export default function MiniDrawer({
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Mini variant drawer
+              Sistema online
             </Typography>
           </Toolbar>
         </AppBar>
@@ -145,8 +149,8 @@ export default function MiniDrawer({
           </DrawerHeader>
           <Divider />
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+            <Link href={"/produto"}>
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -161,18 +165,19 @@ export default function MiniDrawer({
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    <InventoryIcon />
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText
+                    primary={"Produto"}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
                 </ListItemButton>
               </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+            </Link>
+            <Link href={"/venda"}>
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton
+                  href="/venda"
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
@@ -186,12 +191,41 @@ export default function MiniDrawer({
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    <PointOfSaleIcon />
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText
+                    primary={"Venda"}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
                 </ListItemButton>
               </ListItem>
-            ))}
+            </Link>
+            <Link href={"/cliente"}>
+              <ListItem disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  href="/cliente"
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <PeopleAltIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={"Cliente"}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

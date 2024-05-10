@@ -27,7 +27,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      redirect("/painel-controle");
+      redirect("/produto");
     } else {
       setEspera(true);
     }
