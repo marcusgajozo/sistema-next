@@ -20,7 +20,7 @@ const headerTableName: any = {
   description: "Descrição",
   saleValue: "Preço",
   linkDownload: "Link de Download",
-  sizes: "Tamannhos",
+  sizes: "Tamanhos",
   productsAssociates: "Produtos associados",
 };
 
