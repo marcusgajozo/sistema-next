@@ -50,7 +50,6 @@ export default function Venda() {
   const registersale = (data: DataProps) => {
     const { items } = data;
     const lisItems: string[] = items.split(/\s|,/);
-    console.log(lisItems);
     apiConfig
       .post("/sale", { ...data, items: lisItems })
       .then((res) => {
@@ -77,7 +76,6 @@ export default function Venda() {
         setEditSaleForm(false);
         handleForm();
       }
-      console.log(res);
     });
   };
 
@@ -85,7 +83,6 @@ export default function Venda() {
     apiConfig
       .delete(`/sale/${id}`)
       .then((res) => {
-        console.log(res?.status === 200);
         apiConfig.get("/sale").then((res) => {
           if (res?.status === 200) {
             setSales(res?.data);

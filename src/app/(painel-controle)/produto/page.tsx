@@ -75,7 +75,6 @@ export default function Produto() {
       .get("/product")
       .then((res) => {
         if (res?.status === 200) {
-          console.log(res?.data);
           setProducts(res?.data);
         }
       })
@@ -88,7 +87,6 @@ export default function Produto() {
   };
 
   const registerProductSimple = (data: any) => {
-    console.log("entrei simples");
     const { saleValue } = data;
     apiConfig
       .post("/product/simple", { ...data, saleValue: Number(saleValue) })
@@ -101,7 +99,6 @@ export default function Produto() {
   };
 
   const registerProductDigital = (data: any) => {
-    console.log("entrei digital");
     const { saleValue } = data;
     apiConfig
       .post("/product/digital", { ...data, saleValue: Number(saleValue) })
@@ -114,7 +111,6 @@ export default function Produto() {
   };
 
   const registerProductConfigurable = (data: any) => {
-    console.log("entrei config");
     const { sizes, saleValue } = data;
     const lisSizes: string[] = sizes
       ? sizes.split(/\s|,/).filter((size: any) => size.trim() !== "")
@@ -134,7 +130,6 @@ export default function Produto() {
   };
 
   const registerProductGrouped = (data: any) => {
-    console.log("entrei grouped");
     const { productsAssociates, saleValue } = data;
     const lisProductsAssociates: string[] = productsAssociates
       ? productsAssociates
@@ -181,7 +176,6 @@ export default function Produto() {
           setEditProductForm(false);
           handleForm();
         }
-        console.log(res);
       });
   };
 
@@ -189,7 +183,6 @@ export default function Produto() {
     apiConfig
       .delete(`/product/${id}`)
       .then((res) => {
-        console.log(res?.status === 200);
         apiConfig.get("/product").then((res) => {
           if (res?.status === 200) {
             setProducts(res?.data);

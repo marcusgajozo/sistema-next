@@ -63,7 +63,6 @@ export default function Cliente() {
         setEditClientForm(false);
         handleForm();
       }
-      console.log(res);
     });
   };
 
@@ -71,7 +70,6 @@ export default function Cliente() {
     apiConfig
       .delete(`/client/${id}`)
       .then((res) => {
-        console.log(res?.status === 200);
         apiConfig.get("/client").then((res) => {
           if (res?.status === 200) {
             setClients(res?.data);
